@@ -11,6 +11,16 @@ struct Q_node{
 	struct Q_node *link;
 }*front,*rear;
 
+void clear(){
+	while(front!=NULL){
+		struct Q_node *tmp;
+		tmp=front;
+		//printf("deleted element is %d\n",tmp->info);
+		front=front->link;
+		free(tmp);
+	}
+}
+
 void push(struct node *p){
 	struct Q_node *tmp;
 	tmp=malloc(sizeof(struct Q_node));
@@ -24,20 +34,24 @@ void push(struct node *p){
 	}
 	rear=tmp;
 }
+
 struct node * pop(){
 	if(front==NULL){
 		printf("queue underflow\n");
 	}
 	else{
 		struct Q_node *tmp;
+		struct node *p;
 		tmp=front;
 		//printf("deleted element is %d\n",tmp->info);
 		front=front->link;
-		return tmp->t;
+		p=tmp->t;
+		free(tmp);
+		return p;
 	}
 }
-void Q_display()
-{
+
+void Q_display(){
 	if(front==NULL){
 		printf("list is empty\n");
 	}
@@ -94,7 +108,7 @@ void lastnode(struct node *tmp){
 		p=pop();
 		if(p==tmp){
 			p = NULL; 
-            free(tmp); 
+            free(tmp);
             return;
 		}
 		if(p->right){
@@ -155,9 +169,6 @@ void delete_node(int key){
 	}
 }
 	
-	
-	
-
 
 void preorder(struct node* temp){
 	if (temp == NULL)
@@ -183,21 +194,36 @@ void display(){
 		p=p->left;
 	}
 }
+
 int main(){
-	int i;
+	int i,m;
 	struct node *p;
+	do{
 	printf("1.insert node\n");
 	printf("2.delete node\n");
 	printf("3. Inorder traversal\n");
-	printf("4. search element\n");
-	for(i=0;i<10;i++)
-	insert();
+	printf("4. Preorder Traversal\n");
+	printf("Enter your choice:");
+	scanf("%d",&i);
+	switch(i){
+		case 1:
+			insert();clear();break;
+		case 2:
+			printf("Enter the element to delete :");
+			scanf("%d",&m);
+			delete_node(m);clear();
+			break;
+		case 3:
+			inorder(root);printf("\n");break;
+		case 4:
+			preorder(root);printf("\n");break;
+		case 5:break;
+		default:printf("invalid input\n");
+						
+	}
+	}while(i!=5);
 	
-	preorder(root);
-	delete_node(5);
-	preorder(root);
-	printf("\n");
-	Q_display();
+	
 	return 0;
 	
 }
