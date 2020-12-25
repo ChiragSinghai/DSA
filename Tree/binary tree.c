@@ -203,6 +203,7 @@ int main(){
 	printf("2.delete node\n");
 	printf("3. Inorder traversal\n");
 	printf("4. Preorder Traversal\n");
+	printf("5. Exit\n");
 	printf("Enter your choice:");
 	scanf("%d",&i);
 	switch(i){
