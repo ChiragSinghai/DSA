@@ -12,11 +12,25 @@ class BST{
 		void inorder(BST *root){
 			if(root!=NULL){
 				inorder(root->left);
-				printf("%d",root->data);
+				printf("%d ",root->data);
 				inorder(root->right);
 			}
 		}
-		void insert(int key,BST **root);
+		void postorder(BST *root){
+			if(root!=NULL){
+				postorder(root->left);
+				postorder(root->right);
+				printf("%d ",root->data);
+			}
+		}
+		void preorder(BST *root){
+			if(root!=NULL){
+				printf("%d ",root->data);
+				preorder(root->left);
+				preorder(root->right);
+			}
+		}
+		BST* insert(int key,BST* root);
 		BST(int key){
 			left=NULL;
 			right=NULL;
@@ -24,10 +38,9 @@ class BST{
 		}
 		
 };
-void BST::insert(int key,BST **root){
+BST* BST::insert(int key,BST* root){
 	if(root==NULL){
-		root=new BST(key);
-		return;	
+		return new BST(key);	
 	}
 	else{
 		BST *p,*tmp=root;
@@ -46,19 +59,41 @@ void BST::insert(int key,BST **root){
 		else{
 			p->left=new BST(key);
 		}
+		return root;
 	}	
 }
 int main(){
 BST b,*root=NULL;
-printf("%d",root);
-b.insert(45,&root);
-printf("%d",root);
-/*
-printf("%d",root->data);
-b.insert(43,root);b.insert(47,root);b.insert(4,root);
-b.insert(45,root);
-b.insert(5,root);
-b.inorder(root);
-*/
+int choice,m;
+do{
+	printf("1. insert element\n");
+	printf("2. delete element\n");
+	printf("3. preorder traversal\n");
+	printf("4. Inorder traversal\n");
+	printf("5. postorder traversal\n");
+	printf("6. Exit\n");
+	printf("Enter your choice: ");
+	scanf("%d",&choice);
+	switch(choice){
+		case 1:
+			printf("Enter the element you want to enter:");
+			scanf("%d",&m);
+			root=b.insert(m,root);
+			break;
+		case 2:
+			break;
+		case 3:
+			b.preorder(root);printf("\n");break;
+		case 4:
+			b.inorder(root);printf("\n");break;
+		case 5:
+			b.postorder(root);printf("\n");break;
+		case 6:
+			break;
+		default:
+			printf("Enter invalid input\n");
+			break;
+	}
+}while(choice!=6);
 return 0;	
 }
