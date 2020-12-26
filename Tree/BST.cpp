@@ -1,4 +1,5 @@
 #include<iostream>
+#include <cstdlib>
 using namespace std;
 class BST{
 	public:
@@ -31,6 +32,7 @@ class BST{
 			}
 		}
 		BST* insert(int key,BST* root);
+		BST* deleteNode(int key,BST* root);
 		BST(int key){
 			left=NULL;
 			right=NULL;
@@ -62,6 +64,41 @@ BST* BST::insert(int key,BST* root){
 		return root;
 	}	
 }
+BST* BST ::deleteNode(int key,BST* root){
+	BST* temp=root;
+	while(temp!=NULL){
+		if(temp->data<key)
+			temp=temp->right;
+		else if(temp->data>key)
+			temp=temp->left;
+		else
+			break;
+		
+	}
+	if (temp==NULL)
+		printf("Not found\n");
+	else{
+		if(temp->right==NULL){
+			BST* p=temp->left;
+			temp->data=p->data;
+			temp->left=p->left;
+			temp->right=p->right;
+			free(p);
+		}
+		else if(temp->left==NULL){
+			BST *p=temp->right;
+			temp->data=p->data;
+			temp->left=p->left;
+			temp->right=p->right;
+			free(p);
+		}
+		else{
+		     printf("Currently underworking\n");
+		}
+	}
+	return root;
+}
+
 int main(){
 BST b,*root=NULL;
 int choice,m;
@@ -81,6 +118,7 @@ do{
 			root=b.insert(m,root);
 			break;
 		case 2:
+			root=b.deleteNode(5,root);
 			break;
 		case 3:
 			b.preorder(root);printf("\n");break;
