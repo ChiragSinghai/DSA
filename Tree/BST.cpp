@@ -33,6 +33,7 @@ class BST{
 		}
 		BST* insert(int key,BST* root);
 		BST* deleteNode(int key,BST* root);
+		int findNode(BST* root);
 		BST(int key){
 			left=NULL;
 			right=NULL;
@@ -64,6 +65,15 @@ BST* BST::insert(int key,BST* root){
 		return root;
 	}	
 }
+int BST::findNode(BST* root){
+	int p;
+	while(root->right!=NULL){
+		root=root->right;
+	}
+	p=root->data;
+	free(root);
+	return p;
+}
 BST* BST ::deleteNode(int key,BST* root){
 	BST* temp=root;
 	while(temp!=NULL){
@@ -79,11 +89,15 @@ BST* BST ::deleteNode(int key,BST* root){
 		printf("Not found\n");
 	else{
 		if(temp->right==NULL){
+			if(temp->left==NULL){
+				
+			}
 			BST* p=temp->left;
 			temp->data=p->data;
 			temp->left=p->left;
 			temp->right=p->right;
 			free(p);
+
 		}
 		else if(temp->left==NULL){
 			BST *p=temp->right;
@@ -93,9 +107,11 @@ BST* BST ::deleteNode(int key,BST* root){
 			free(p);
 		}
 		else{
-		     printf("Currently underworking\n");
+			temp->data=findNode(temp->left);
 		}
 	}
+	
+	
 	return root;
 }
 
@@ -118,7 +134,10 @@ do{
 			root=b.insert(m,root);
 			break;
 		case 2:
-			root=b.deleteNode(5,root);
+			printf("Enter the element you want to enter:");
+			scanf("%d",&m);
+			root=b.deleteNode(m,root);
+			
 			break;
 		case 3:
 			b.preorder(root);printf("\n");break;
