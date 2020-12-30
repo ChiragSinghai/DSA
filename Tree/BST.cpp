@@ -33,7 +33,8 @@ class BST{
 		}
 		BST* insert(int key,BST* root);
 		BST* deleteNode(int key,BST* root);
-		int findNode(BST* root);
+		void search(int key,BST *root);
+		
 		BST(int key){
 			left=NULL;
 			right=NULL;
@@ -65,55 +66,74 @@ BST* BST::insert(int key,BST* root){
 		return root;
 	}	
 }
-int BST::findNode(BST* root){
-	int p;
-	while(root->right!=NULL){
-		root=root->right;
-	}
-	p=root->data;
-	free(root);
-	return p;
-}
-BST* BST ::deleteNode(int key,BST* root){
-	BST* temp=root;
-	while(temp!=NULL){
-		if(temp->data<key)
-			temp=temp->right;
-		else if(temp->data>key)
-			temp=temp->left;
-		else
-			break;
-		
-	}
-	if (temp==NULL)
-		printf("Not found\n");
-	else{
-		if(temp->right==NULL){
-			if(temp->left==NULL){
-				
-			}
-			BST* p=temp->left;
-			temp->data=p->data;
-			temp->left=p->left;
-			temp->right=p->right;
-			free(p);
 
-		}
-		else if(temp->left==NULL){
-			BST *p=temp->right;
-			temp->data=p->data;
-			temp->left=p->left;
-			temp->right=p->right;
-			free(p);
+
+BST* BST ::deleteNode(int key,BST* root){
+	BST *prev=NULL,*curr=root;
+	while (curr!=NULL && curr->data!=key){
+		prev=curr;
+		if(key<curr->data){
+			curr=curr->left;
 		}
 		else{
-			temp->data=findNode(temp->left);
+			curr=curr->right;
 		}
 	}
-	
-	
+	if(curr==NULL){
+		cout<<"key"<<key<<"not found in BST"<<endl;
+		return root;
+	}
+	if(curr->left==NULL || curr->right==NULL){
+		BST *newcurr;
+		if(curr->left==NULL){
+			newcurr=curr->right;
+		}
+		else{
+			newcurr=curr->left;
+		}
+		if(prev==NULL){
+			return newcurr;
+		}
+		if(curr==prev->left){
+			prev->left=newcurr;
+		}
+		else{
+			prev->right=newcurr;
+		}
+		free(curr);
+	}
+	else{
+		BST *p=NULL;
+		BST *temp=curr->right;
+		while(temp->left!=NULL){
+			p=temp;
+			temp=temp->left;
+		}
+		if(p!=NULL){
+			p->left=temp->right;
+		}
+		else{
+			curr->right=temp->right;
+		}
+		curr->data=temp->data;
+		free(temp);
+	}
 	return root;
 }
+void BST::search(int key,BST *root){
+	while (root!=NULL){
+		if (key<root->data)
+			root=root->left;
+		else if(key>root->data)
+			root=root->right;
+		else{
+			cout<<"key "<<key<<" found"<<endl;
+			return;
+		}
+	}
+	cout<<"key not found"<<endl;
+}
+	
 
 int main(){
 BST b,*root=NULL;
@@ -121,10 +141,11 @@ int choice,m;
 do{
 	printf("1. insert element\n");
 	printf("2. delete element\n");
-	printf("3. preorder traversal\n");
-	printf("4. Inorder traversal\n");
-	printf("5. postorder traversal\n");
-	printf("6. Exit\n");
+	printf("3. delete element\n");
+	printf("4. preorder traversal\n");
+	printf("5. Inorder traversal\n");
+	printf("6. postorder traversal\n");
+	printf("7. Exit\n");
 	printf("Enter your choice: ");
 	scanf("%d",&choice);
 	switch(choice){
@@ -137,20 +158,24 @@ do{
 			printf("Enter the element you want to enter:");
 			scanf("%d",&m);
 			root=b.deleteNode(m,root);
-			
 			break;
 		case 3:
-			b.preorder(root);printf("\n");break;
+			printf("Enter the element you want to enter:");
+			scanf("%d",&m);
+			b.search(m,root);
+			break;			
 		case 4:
-			b.inorder(root);printf("\n");break;
+			b.preorder(root);printf("\n");break;
 		case 5:
-			b.postorder(root);printf("\n");break;
+			b.inorder(root);printf("\n");break;
 		case 6:
+			b.postorder(root);printf("\n");break;
+		case 7:
 			break;
 		default:
 			printf("Enter invalid input\n");
 			break;
 	}
-}while(choice!=6);
+}while(choice!=7);
 return 0;	
 }
