@@ -185,14 +185,23 @@ void inorder(struct node* temp){
     printf("%d  ",temp->data);
     inorder(temp->right);
 }
-
-void display(){
-	struct node *p;
-	p=root;
-	while(p!=NULL){
-		printf("%d  ",p->data);
-		p=p->left;
-	}
+#this is a level order search i.e bfs
+void search(int key){
+	struct node *tmp;
+	push(root);
+	while(front!=NULL){
+		tmp=pop();
+		if(tmp->data==key){
+			printf("%d exists in the binary tree \n",key);
+			return;
+		}
+		else{
+			if(tmp->left)
+			push(tmp->left);
+			if(tmp->right)
+			push(tmp->right);
+		}
+	}	
 }
 
 int main(){
@@ -201,9 +210,10 @@ int main(){
 	do{
 	printf("1.insert node\n");
 	printf("2.delete node\n");
-	printf("3. Inorder traversal\n");
-	printf("4. Preorder Traversal\n");
-	printf("5. Exit\n");
+	printf("3.search node\n");
+	printf("4. Inorder traversal\n");
+	printf("5. Preorder Traversal\n");
+	printf("6. Exit\n");
 	printf("Enter your choice:");
 	scanf("%d",&i);
 	switch(i){
@@ -215,14 +225,20 @@ int main(){
 			delete_node(m);clear();
 			break;
 		case 3:
-			inorder(root);printf("\n");break;
+			printf("Enter the element to search:");
+			scanf("%d",&m);
+			search(m);
+			clear();
+			break;
 		case 4:
+			inorder(root);printf("\n");break;
+		case 5:
 			preorder(root);printf("\n");break;
-		case 5:break;
+		case 6:break;
 		default:printf("invalid input\n");
 						
 	}
-	}while(i!=5);
+	}while(i!=6);
 	
 	
 	return 0;
